@@ -11,7 +11,7 @@ import type { TopicPriority } from "../types/db";
 type MenuSheetKind = "menu" | "subjects" | "exams" | "profile" | null;
 
 export function HomeScreen() {
-  const { priorities, loading, error, refetch } = useTopicPriorities();
+  const { priorities, loading, error, refetch, version } = useTopicPriorities();
   const [openSheet, setOpenSheet] = useState<MenuSheetKind>(null);
   const [timerTarget, setTimerTarget] = useState<TimerTarget | null | "avulso">(null);
 
@@ -48,6 +48,7 @@ export function HomeScreen() {
             item={item}
             tier={tierFor(item.priority, maxPriority)}
             onStudy={openTimerFor}
+            refreshKey={version}
           />
         ))}
       </div>

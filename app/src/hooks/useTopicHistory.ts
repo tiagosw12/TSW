@@ -17,7 +17,7 @@ const ACTIVITY_QUALITY: Record<ActivityType, number> = {
 
 const LOOKBACK_DAYS = 30;
 
-export function useTopicHistory(topicId: string) {
+export function useTopicHistory(topicId: string, refreshKey: number = 0) {
   const [retention, setRetention] = useState<TopicRetention | null>(null);
   const [events, setEvents] = useState<ReviewEvent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ export function useTopicHistory(topicId: string) {
     return () => {
       cancelled = true;
     };
-  }, [topicId]);
+  }, [topicId, refreshKey]);
 
   return { retention, events, loading };
 }

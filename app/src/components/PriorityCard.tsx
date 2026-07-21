@@ -16,12 +16,14 @@ export function PriorityCard({
   item,
   tier,
   onStudy,
+  refreshKey,
 }: {
   item: TopicPriority;
   tier: PriorityTier;
   onStudy: (item: TopicPriority) => void;
+  refreshKey: number;
 }) {
-  const { retention, events } = useTopicHistory(item.topic_id);
+  const { retention, events } = useTopicHistory(item.topic_id, refreshKey);
 
   return (
     <button className={`priority-card priority-card--${tier}`} onClick={() => onStudy(item)}>

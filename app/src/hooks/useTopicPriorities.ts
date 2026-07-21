@@ -6,6 +6,7 @@ export function useTopicPriorities() {
   const [priorities, setPriorities] = useState<TopicPriority[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [version, setVersion] = useState(0);
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -17,11 +18,24 @@ export function useTopicPriorities() {
       setPriorities(data ?? []);
     }
     setLoading(false);
+    setVersion((v) => v + 1);
   }, []);
 
   useEffect(() => {
     refetch();
   }, [refetch]);
 
-  return { priorities, loading, error, refetch };
+  useEffect(() => {
+    function handleVisibility() {
+      if (document.visibilityState === "visible") refetch();
+    }
+    window.addEventListener("focus", refetch);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      window.removeEventListener("focus", refetch);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [refetch]);
+
+  return { priorities, loading, error, refetch, version };
 }
