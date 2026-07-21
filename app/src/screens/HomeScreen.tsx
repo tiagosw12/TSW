@@ -18,7 +18,12 @@ export function HomeScreen() {
   const maxPriority = priorities[0]?.priority ?? 0;
 
   function openTimerFor(item: TopicPriority) {
-    setTimerTarget({ topicId: item.topic_id, topicName: item.topic_name, subjectName: item.subject_name });
+    setTimerTarget({
+      topicId: item.topic_id,
+      topicName: item.topic_name,
+      subjectId: item.subject_id,
+      subjectName: item.subject_name,
+    });
   }
 
   return (

@@ -9,6 +9,7 @@ import { Sheet } from "../components/Sheet";
 export interface TimerTarget {
   topicId: string;
   topicName: string;
+  subjectId: string;
   subjectName: string;
 }
 
@@ -42,6 +43,9 @@ export function TimerSheet({
   const [activityType, setActivityType] = useState<ActivityType | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [correctPercentage, setCorrectPercentage] = useState(70);
+  const [questionsCount, setQuestionsCount] = useState(10);
+  const [quizError, setQuizError] = useState<string | null>(null);
   const startedAtRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -54,8 +58,8 @@ export function TimerSheet({
     return () => window.clearInterval(interval);
   }, [phase]);
 
-  function pickTopic(topicId: string, topicName: string, subjectName: string) {
-    setTarget({ topicId, topicName, subjectName });
+  function pickTopic(topicId: string, topicName: string, subjectId: string, subjectName: string) {
+    setTarget({ topicId, topicName, subjectId, subjectName });
     setPhase("setup");
   }
 
@@ -93,6 +97,28 @@ export function TimerSheet({
     onClose();
   }
 
+  async function saveQuiz() {
+    if (!user || !target) return;
+    setQuizError(null);
+
+    const { error } = await supabase.from("quiz_results").insert({
+      user_id: user.id,
+      subject_id: target.subjectId,
+      topic_id: target.topicId,
+      correct_percentage: correctPercentage,
+      questions_count: questionsCount,
+    });
+
+    if (error) {
+      setQuizError("Não foi possível salvar o resultado (sem conexão?). Tente novamente.");
+      return;
+    }
+
+    showToast("Resultado registrado — retenção atualizada");
+    onSaved();
+    onClose();
+  }
+
   return (
     <Sheet title={target ? `${target.subjectName} · ${target.topicName}` : "Estudar tópico"} onClose={onClose}>
       {phase === "pick" && (
@@ -106,7 +132,7 @@ export function TimerSheet({
                   <button
                     key={topic.id}
                     className="button button--secondary"
-                    onClick={() => pickTopic(topic.id, topic.name, subject.name)}
+                    onClick={() => pickTopic(topic.id, topic.name, subject.id, subject.name)}
                   >
                     {topic.name}
                   </button>
@@ -131,9 +157,38 @@ export function TimerSheet({
               </button>
             ))}
           </div>
-          <button className="button button--primary" disabled={!activityType} onClick={startCycle}>
-            Iniciar ciclo
-          </button>
+          {activityType === "questao" ? (
+            <div className="quiz-form">
+              <label className="form__field">
+                <span>Acerto: {correctPercentage}%</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={correctPercentage}
+                  onChange={(e) => setCorrectPercentage(Number(e.target.value))}
+                />
+              </label>
+              <label className="form__field">
+                <span>Quantidade de questões</span>
+                <input
+                  type="number"
+                  min={1}
+                  value={questionsCount}
+                  onChange={(e) => setQuestionsCount(Math.max(1, Math.round(Number(e.target.value) || 1)))}
+                />
+              </label>
+              {quizError && <p className="form__error">{quizError}</p>}
+              <button className="button button--primary" onClick={saveQuiz}>
+                Salvar resultado
+              </button>
+            </div>
+          ) : (
+            <button className="button button--primary" disabled={!activityType} onClick={startCycle}>
+              Iniciar ciclo
+            </button>
+          )}
         </div>
       )}
 

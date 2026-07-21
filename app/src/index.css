@@ -570,6 +570,19 @@ button {
   font-weight: 600;
 }
 
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quiz-form input[type="range"] {
+  padding: 0;
+  border: none;
+  background: transparent;
+  accent-color: var(--accent-trace);
+}
+
 .timer-running {
   text-align: center;
   padding: 1.5rem 0;
