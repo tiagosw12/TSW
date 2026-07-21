@@ -1,0 +1,76 @@
+/* Clinical chart palette: real dark (near-black, cool), paper-gray light —
+   deliberately not the beige/terracotta or neon-on-black AI defaults.
+   Accents mirror an actual monitor/chart: phosphor green, amber, clinical red. */
+
+:root {
+  --bg: #0a0e12;
+  --bg-elevated: #10161c;
+  --bg-sunken: #060a0d;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --border: #202a32;
+  --border-strong: #2c3944;
+
+  --text-primary: #e7edf0;
+  --text-secondary: #93a7b1;
+  --text-muted: #5b6b73;
+
+  --accent-trace: #33d999;
+  --accent-trace-dim: rgba(51, 217, 153, 0.18);
+  --accent-warn: #e0a95f;
+  --accent-warn-dim: rgba(224, 169, 95, 0.16);
+  --accent-critical: #e2695a;
+  --accent-critical-dim: rgba(226, 105, 90, 0.16);
+  --accent-info: #5fa8d9;
+
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-data: ui-monospace, "SF Mono", "Menlo", "Cascadia Code", monospace;
+}
+
+:root[data-theme="light"] {
+  --bg: #eef1f2;
+  --bg-elevated: #ffffff;
+  --bg-sunken: #e4e8ea;
+  --grid-line: rgba(20, 40, 50, 0.05);
+  --border: #d3dade;
+  --border-strong: #b9c4c9;
+
+  --text-primary: #16232a;
+  --text-secondary: #48606b;
+  --text-muted: #7c8f97;
+
+  --accent-trace: #1f9c6c;
+  --accent-trace-dim: rgba(31, 156, 108, 0.12);
+  --accent-warn: #b9762a;
+  --accent-warn-dim: rgba(185, 118, 42, 0.12);
+  --accent-critical: #b8483a;
+  --accent-critical-dim: rgba(184, 72, 58, 0.12);
+  --accent-info: #2f74a8;
+
+  --shadow: 0 8px 24px rgba(20, 30, 35, 0.12);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) {
+    --bg: #eef1f2;
+    --bg-elevated: #ffffff;
+    --bg-sunken: #e4e8ea;
+    --grid-line: rgba(20, 40, 50, 0.05);
+    --border: #d3dade;
+    --border-strong: #b9c4c9;
+
+    --text-primary: #16232a;
+    --text-secondary: #48606b;
+    --text-muted: #7c8f97;
+
+    --accent-trace: #1f9c6c;
+    --accent-trace-dim: rgba(31, 156, 108, 0.12);
+    --accent-warn: #b9762a;
+    --accent-warn-dim: rgba(185, 118, 42, 0.12);
+    --accent-critical: #b8483a;
+    --accent-critical-dim: rgba(184, 72, 58, 0.12);
+    --accent-info: #2f74a8;
+
+    --shadow: 0 8px 24px rgba(20, 30, 35, 0.12);
+  }
+}
