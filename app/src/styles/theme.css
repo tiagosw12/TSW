@@ -1,76 +1,90 @@
-/* Clinical chart palette: real dark (near-black, cool), paper-gray light —
-   deliberately not the beige/terracotta or neon-on-black AI defaults.
-   Accents mirror an actual monitor/chart: phosphor green, amber, clinical red. */
+/* iOS-native palette: light mode mirrors systemGroupedBackground (light gray
+   page, white cards); dark mode mirrors the same grouped style inverted
+   (near-black page, #1C1C1E cards). Urgency accents map to Apple's system
+   red/orange/green so the same colors read consistently in both modes. */
 
 :root {
-  --bg: #0a0e12;
-  --bg-elevated: #10161c;
-  --bg-sunken: #060a0d;
-  --grid-line: rgba(255, 255, 255, 0.045);
-  --border: #202a32;
-  --border-strong: #2c3944;
+  --bg: #000000;
+  --bg-elevated: #1c1c1e;
+  --bg-sunken: #2c2c2e;
+  --border: #38383a;
+  --border-strong: #48484a;
 
-  --text-primary: #e7edf0;
-  --text-secondary: #93a7b1;
-  --text-muted: #5b6b73;
+  --text-primary: #f2f2f7;
+  --text-secondary: #98989d;
+  --text-muted: #636366;
 
-  --accent-trace: #33d999;
-  --accent-trace-dim: rgba(51, 217, 153, 0.18);
-  --accent-warn: #e0a95f;
-  --accent-warn-dim: rgba(224, 169, 95, 0.16);
-  --accent-critical: #e2695a;
-  --accent-critical-dim: rgba(226, 105, 90, 0.16);
-  --accent-info: #5fa8d9;
+  --accent-trace: #32d74b;
+  --accent-trace-dim: rgba(50, 215, 75, 0.16);
+  --accent-warn: #ff9f0a;
+  --accent-warn-dim: rgba(255, 159, 10, 0.16);
+  --accent-critical: #ff453a;
+  --accent-critical-dim: rgba(255, 69, 58, 0.16);
+  --accent-info: #0a84ff;
 
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --gradient-critical: linear-gradient(135deg, #ff7a70, #ff453a);
+  --gradient-moderate: linear-gradient(135deg, #ffbd57, #ff9f0a);
+  --gradient-low: linear-gradient(135deg, #6fe08a, #32d74b);
+  --gradient-neutral: linear-gradient(135deg, #64b5ff, #0a84ff);
+
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --radius-card: 18px;
   --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-data: ui-monospace, "SF Mono", "Menlo", "Cascadia Code", monospace;
 }
 
 :root[data-theme="light"] {
-  --bg: #eef1f2;
+  --bg: #f2f2f7;
   --bg-elevated: #ffffff;
-  --bg-sunken: #e4e8ea;
-  --grid-line: rgba(20, 40, 50, 0.05);
-  --border: #d3dade;
-  --border-strong: #b9c4c9;
+  --bg-sunken: #f2f2f7;
+  --border: rgba(60, 60, 67, 0.15);
+  --border-strong: rgba(60, 60, 67, 0.29);
 
-  --text-primary: #16232a;
-  --text-secondary: #48606b;
-  --text-muted: #7c8f97;
+  --text-primary: #1c1c1e;
+  --text-secondary: #6c6c70;
+  --text-muted: #aeaeb2;
 
-  --accent-trace: #1f9c6c;
-  --accent-trace-dim: rgba(31, 156, 108, 0.12);
-  --accent-warn: #b9762a;
-  --accent-warn-dim: rgba(185, 118, 42, 0.12);
-  --accent-critical: #b8483a;
-  --accent-critical-dim: rgba(184, 72, 58, 0.12);
-  --accent-info: #2f74a8;
+  --accent-trace: #30b953;
+  --accent-trace-dim: rgba(48, 185, 83, 0.12);
+  --accent-warn: #ff9500;
+  --accent-warn-dim: rgba(255, 149, 0, 0.12);
+  --accent-critical: #ff3b30;
+  --accent-critical-dim: rgba(255, 59, 48, 0.12);
+  --accent-info: #007aff;
 
-  --shadow: 0 8px 24px rgba(20, 30, 35, 0.12);
+  --gradient-critical: linear-gradient(135deg, #ff8079, #ff3b30);
+  --gradient-moderate: linear-gradient(135deg, #ffb454, #ff9500);
+  --gradient-low: linear-gradient(135deg, #6fdd8b, #30b953);
+  --gradient-neutral: linear-gradient(135deg, #64b5ff, #007aff);
+
+  --shadow: 0 1px 2px rgba(28, 28, 30, 0.04), 0 8px 20px rgba(28, 28, 30, 0.06);
 }
 
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]):not([data-theme="light"]) {
-    --bg: #eef1f2;
+    --bg: #f2f2f7;
     --bg-elevated: #ffffff;
-    --bg-sunken: #e4e8ea;
-    --grid-line: rgba(20, 40, 50, 0.05);
-    --border: #d3dade;
-    --border-strong: #b9c4c9;
+    --bg-sunken: #f2f2f7;
+    --border: rgba(60, 60, 67, 0.15);
+    --border-strong: rgba(60, 60, 67, 0.29);
 
-    --text-primary: #16232a;
-    --text-secondary: #48606b;
-    --text-muted: #7c8f97;
+    --text-primary: #1c1c1e;
+    --text-secondary: #6c6c70;
+    --text-muted: #aeaeb2;
 
-    --accent-trace: #1f9c6c;
-    --accent-trace-dim: rgba(31, 156, 108, 0.12);
-    --accent-warn: #b9762a;
-    --accent-warn-dim: rgba(185, 118, 42, 0.12);
-    --accent-critical: #b8483a;
-    --accent-critical-dim: rgba(184, 72, 58, 0.12);
-    --accent-info: #2f74a8;
+    --accent-trace: #30b953;
+    --accent-trace-dim: rgba(48, 185, 83, 0.12);
+    --accent-warn: #ff9500;
+    --accent-warn-dim: rgba(255, 149, 0, 0.12);
+    --accent-critical: #ff3b30;
+    --accent-critical-dim: rgba(255, 59, 48, 0.12);
+    --accent-info: #007aff;
 
-    --shadow: 0 8px 24px rgba(20, 30, 35, 0.12);
+    --gradient-critical: linear-gradient(135deg, #ff8079, #ff3b30);
+    --gradient-moderate: linear-gradient(135deg, #ffb454, #ff9500);
+    --gradient-low: linear-gradient(135deg, #6fdd8b, #30b953);
+    --gradient-neutral: linear-gradient(135deg, #64b5ff, #007aff);
+
+    --shadow: 0 1px 2px rgba(28, 28, 30, 0.04), 0 8px 20px rgba(28, 28, 30, 0.06);
   }
 }

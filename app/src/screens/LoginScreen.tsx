@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { GraduationCap } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
 export function LoginScreen() {
@@ -31,9 +32,7 @@ export function LoginScreen() {
     <div className="auth-screen">
       <div className="auth-card">
         <div className="auth-card__mark">
-          <svg viewBox="0 0 120 32" className="auth-card__ecg" aria-hidden="true">
-            <polyline points="0,16 30,16 38,4 46,28 54,16 120,16" />
-          </svg>
+          <GraduationCap size={26} strokeWidth={2.25} color="#fff" />
         </div>
         <h1 className="auth-card__title">Ficha de Estudos</h1>
         <p className="auth-card__subtitle">

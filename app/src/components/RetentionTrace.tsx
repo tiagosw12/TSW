@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import type { TopicRetention } from "../types/db";
 import type { ReviewEvent } from "../hooks/useTopicHistory";
 
 const WIDTH = 300;
-const HEIGHT = 72;
-const BASELINE = HEIGHT - 6;
-const AMPLITUDE = HEIGHT - 14;
+const HEIGHT = 44;
+const BASELINE = HEIGHT - 4;
+const AMPLITUDE = HEIGHT - 10;
 const WINDOW_DAYS = 30;
 const SAMPLES_PER_SEGMENT = 24;
 
@@ -89,10 +89,12 @@ export function RetentionTrace({
   retention: TopicRetention | null;
   events: ReviewEvent[];
 }) {
+  const gradientId = useId();
   const points = useMemo(() => buildPoints(retention, events), [retention, events]);
   const currentRetention = retention?.estimated_retention ?? 0;
   const strokeColor = colorForRetention(currentRetention);
   const path = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+  const areaPath = `${path} L${WIDTH},${BASELINE} L0,${BASELINE} Z`;
 
   return (
     <svg
@@ -106,7 +108,13 @@ export function RetentionTrace({
           : "Sem histórico de estudo registrado"
       }
     >
-      <line x1={0} y1={BASELINE} x2={WIDTH} y2={BASELINE} className="retention-trace__baseline" />
+      <defs>
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={strokeColor} stopOpacity="0.35" />
+          <stop offset="100%" stopColor={strokeColor} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={areaPath} fill={`url(#${gradientId})`} stroke="none" />
       <path d={path} className="retention-trace__path" stroke={strokeColor} />
     </svg>
   );

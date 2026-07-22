@@ -9,6 +9,7 @@ export interface Database {
           user_id: string;
           name: string;
           color: string | null;
+          icon: string;
           created_at: string;
           updated_at: string;
         };
@@ -17,10 +18,12 @@ export interface Database {
           user_id: string;
           name: string;
           color?: string | null;
+          icon?: string;
         };
         Update: {
           name?: string;
           color?: string | null;
+          icon?: string;
         };
         Relationships: [];
       };

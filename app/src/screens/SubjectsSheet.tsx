@@ -1,20 +1,32 @@
 import { useState } from "react";
 import { useSubjects } from "../hooks/useSubjects";
 import { Sheet } from "../components/Sheet";
+import { IconPicker } from "../components/IconPicker";
+import { SUBJECT_ICONS } from "../lib/subjectIcons";
 
 export function SubjectsSheet({ onClose }: { onClose: () => void }) {
-  const { subjects, createSubject, renameSubject, deleteSubject, createTopic, updateTopic, deleteTopic } =
-    useSubjects();
+  const {
+    subjects,
+    createSubject,
+    renameSubject,
+    updateSubjectIcon,
+    deleteSubject,
+    createTopic,
+    updateTopic,
+    deleteTopic,
+  } = useSubjects();
 
   const [newSubjectName, setNewSubjectName] = useState("");
+  const [newSubjectIcon, setNewSubjectIcon] = useState(SUBJECT_ICONS[0].key);
   const [newTopicBySubject, setNewTopicBySubject] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
 
   async function handleCreateSubject() {
     if (!newSubjectName.trim()) return;
-    const err = await createSubject(newSubjectName.trim(), null);
+    const err = await createSubject(newSubjectName.trim(), newSubjectIcon);
     if (err) return setError(err);
     setNewSubjectName("");
+    setNewSubjectIcon(SUBJECT_ICONS[0].key);
     setError(null);
   }
 
@@ -35,6 +47,7 @@ export function SubjectsSheet({ onClose }: { onClose: () => void }) {
         {subjects.map((subject) => (
           <div key={subject.id} className="crud-list__group">
             <div className="crud-list__group-header">
+              <IconPicker value={subject.icon} onChange={(icon) => updateSubjectIcon(subject.id, icon)} />
               <input
                 className="crud-list__inline-input"
                 defaultValue={subject.name}
@@ -104,6 +117,7 @@ export function SubjectsSheet({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="crud-list__add-row crud-list__add-row--subject">
+        <IconPicker value={newSubjectIcon} onChange={setNewSubjectIcon} />
         <input
           placeholder="Nova matéria"
           value={newSubjectName}
