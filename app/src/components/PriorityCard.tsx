@@ -26,7 +26,7 @@ export function PriorityCard({
   onStudy: (item: TopicPriority) => void;
   refreshKey: number;
 }) {
-  const { retention, events } = useTopicHistory(item.topic_id, refreshKey);
+  const { retention } = useTopicHistory(item.topic_id, refreshKey);
   const Icon = iconForKey(icon);
 
   return (
@@ -41,7 +41,7 @@ export function PriorityCard({
           <span className="priority-card__topic">{item.topic_name}</span>
         </div>
 
-        <RetentionTrace retention={retention} events={events} />
+        <RetentionTrace retention={retention} />
 
         <div className="priority-card__meta">
           <span>

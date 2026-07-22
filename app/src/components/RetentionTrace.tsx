@@ -1,13 +1,11 @@
 import { useId, useMemo } from "react";
 import type { TopicRetention } from "../types/db";
-import type { ReviewEvent } from "../hooks/useTopicHistory";
 
 const WIDTH = 300;
 const HEIGHT = 44;
 const BASELINE = HEIGHT - 4;
 const AMPLITUDE = HEIGHT - 10;
-const WINDOW_DAYS = 30;
-const SAMPLES_PER_SEGMENT = 24;
+const SAMPLES = 60;
 
 // Colors follow the same value the number does: near-1 retention reads as a
 // healthy trace, near-0 reads as the trace flattening out — a monitor
@@ -25,15 +23,14 @@ interface Point {
 }
 
 /**
- * The rightmost point of the curve always equals retention.estimated_retention
- * exactly, since it's produced by the same R = e^(-t/S) formula the backend
- * uses. Spikes at earlier review events use that event's recorded quality as
- * an illustrative amplitude (we don't have historical stability snapshots to
- * replay precisely) — only the current, present-day leg is authoritative.
+ * A single continuous R = e^(-t/S) curve spanning the whole width, from the
+ * moment of the last review (t=0, r=1, left edge) to now (t=days_since_review,
+ * r=estimated_retention, right edge) — sampled at many intermediate points so
+ * the decay reads as a smooth curve rather than two endpoints joined by a
+ * straight line.
  */
-function buildPoints(retention: TopicRetention | null, events: ReviewEvent[]): Point[] {
-  const now = Date.now();
-  const windowStart = now - WINDOW_DAYS * 86_400_000;
+function buildPoints(retention: TopicRetention | null): Point[] {
+  const toY = (r: number) => BASELINE - Math.max(0, Math.min(1, r)) * AMPLITUDE;
 
   if (!retention) {
     return [
@@ -42,55 +39,21 @@ function buildPoints(retention: TopicRetention | null, events: ReviewEvent[]): P
     ];
   }
 
-  const stabilityMs = Math.max(retention.stability_days, 0.25) * 86_400_000;
-  const lastReviewedAt = new Date(retention.last_reviewed_at).getTime();
-
-  const anchors = events.length > 0 ? events.map((e) => new Date(e.performedAt).getTime()) : [lastReviewedAt];
-  const qualities = events.length > 0 ? events.map((e) => e.quality) : [1];
-
-  const toX = (t: number) => ((t - windowStart) / (now - windowStart)) * WIDTH;
-  const toY = (r: number) => BASELINE - Math.max(0, Math.min(1, r)) * AMPLITUDE;
+  const stabilityDays = Math.max(retention.stability_days, 0.25);
+  const totalDays = Math.max(retention.days_since_review, 0);
 
   const points: Point[] = [];
-
-  // Before the first known review in the window there's no data — draw flat
-  // baseline instead of a fabricated "already retained" line.
-  if (anchors[0] > windowStart) {
-    points.push({ x: 0, y: toY(0) });
-    points.push({ x: toX(anchors[0]), y: toY(0) });
-  }
-
-  for (let i = 0; i < anchors.length; i++) {
-    const segmentStart = anchors[i];
-    const segmentEnd = i < anchors.length - 1 ? anchors[i + 1] : now;
-    const isFinalSegment = i === anchors.length - 1;
-    const amplitude = isFinalSegment ? 1 : qualities[i];
-
-    const steps = SAMPLES_PER_SEGMENT;
-    for (let s = 0; s <= steps; s++) {
-      const t = segmentStart + ((segmentEnd - segmentStart) * s) / steps;
-      if (t < windowStart) continue;
-      const elapsedMs = isFinalSegment ? t - lastReviewedAt : t - segmentStart;
-      const r = amplitude * Math.exp(-Math.max(0, elapsedMs) / stabilityMs);
-      points.push({ x: toX(t), y: toY(r) });
-    }
-  }
-
-  if (points.length === 0 || points[0].x > 0) {
-    points.unshift({ x: 0, y: points[0]?.y ?? BASELINE });
+  for (let s = 0; s <= SAMPLES; s++) {
+    const elapsedDays = (totalDays * s) / SAMPLES;
+    const r = Math.exp(-elapsedDays / stabilityDays);
+    points.push({ x: (WIDTH * s) / SAMPLES, y: toY(r) });
   }
   return points;
 }
 
-export function RetentionTrace({
-  retention,
-  events,
-}: {
-  retention: TopicRetention | null;
-  events: ReviewEvent[];
-}) {
+export function RetentionTrace({ retention }: { retention: TopicRetention | null }) {
   const gradientId = useId();
-  const points = useMemo(() => buildPoints(retention, events), [retention, events]);
+  const points = useMemo(() => buildPoints(retention), [retention]);
   const currentRetention = retention?.estimated_retention ?? 0;
   const strokeColor = colorForRetention(currentRetention);
   const path = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
