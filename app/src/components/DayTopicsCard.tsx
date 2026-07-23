@@ -32,7 +32,7 @@ export function DayTopicsCard({
       )}
 
       <div className="priority-card__header">
-        <SubjectIconBadge subjectName={top.subject_name} tier={topTier} size={36} />
+        <SubjectIconBadge subjectName={top.subject_name} icon={top.subject_icon} tier={topTier} size={36} />
         <div className="priority-card__header-text">
           <span className="priority-card__subject">{top.subject_name}</span>
           <span className="priority-card__topic">{top.topic_name}</span>
@@ -46,7 +46,7 @@ export function DayTopicsCard({
             const rowTier = tierFor(item.priority, maxPriority);
             return (
               <div className="day-card__row" key={item.topic_id}>
-                <SubjectIconBadge subjectName={item.subject_name} tier={rowTier} size={22} />
+                <SubjectIconBadge subjectName={item.subject_name} icon={item.subject_icon} tier={rowTier} size={22} />
                 <span className="day-card__row-text">
                   {item.subject_name} · {item.topic_name}
                 </span>

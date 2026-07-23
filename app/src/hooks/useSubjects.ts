@@ -52,11 +52,11 @@ export function useSubjects() {
     refetch();
   }, [refetch]);
 
-  async function createSubject(name: string, color: string | null) {
+  async function createSubject(name: string, color: string | null, icon: string | null = null) {
     if (!user) return "Sessão expirada.";
     const { error: insertError } = await supabase
       .from("subjects")
-      .insert({ user_id: user.id, name, color });
+      .insert({ user_id: user.id, name, color, icon });
     if (insertError) return insertError.message;
     await refetch();
     return null;
@@ -64,6 +64,13 @@ export function useSubjects() {
 
   async function renameSubject(id: string, name: string) {
     const { error: updateError } = await supabase.from("subjects").update({ name }).eq("id", id);
+    if (updateError) return updateError.message;
+    await refetch();
+    return null;
+  }
+
+  async function updateSubject(id: string, changes: { name?: string; icon?: string | null }) {
+    const { error: updateError } = await supabase.from("subjects").update(changes).eq("id", id);
     if (updateError) return updateError.message;
     await refetch();
     return null;
@@ -107,6 +114,7 @@ export function useSubjects() {
     refetch,
     createSubject,
     renameSubject,
+    updateSubject,
     deleteSubject,
     createTopic,
     updateTopic,

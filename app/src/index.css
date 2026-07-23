@@ -222,6 +222,37 @@ button {
   gap: 0.85rem;
 }
 
+/* ---------- Day summary tiles ---------- */
+
+.day-summary {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.day-summary__tile {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+}
+
+.day-summary__value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: var(--font-data);
+}
+
+.day-summary__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
 /* ---------- Priority card ---------- */
 
 .priority-card {
@@ -302,39 +333,195 @@ button {
   color: var(--text-muted);
 }
 
-.retention-trace {
+.retention-bar {
   width: 100%;
-  height: 56px;
-  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-sunken);
+  overflow: hidden;
 }
 
-.retention-trace__baseline {
-  stroke: var(--border);
-  stroke-width: 1;
+.retention-bar__fill {
+  height: 100%;
+  border-radius: 999px;
 }
 
-.retention-trace__path {
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.retention-bar__fill--critical {
+  background: linear-gradient(90deg, var(--accent-critical-dim), var(--accent-critical));
 }
 
-/* ---------- FAB ---------- */
+.retention-bar__fill--moderate {
+  background: linear-gradient(90deg, var(--accent-warn-dim), var(--accent-warn));
+}
 
-.fab {
+.retention-bar__fill--low {
+  background: linear-gradient(90deg, var(--accent-trace-dim), var(--accent-trace));
+}
+
+/* ---------- Adicionar (quick actions hub) ---------- */
+
+.add-sheet__section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-family: var(--font-data);
+  margin: 1.25rem 0 0.6rem;
+}
+
+.add-sheet__section-label:first-child {
+  margin-top: 0;
+}
+
+.add-grid--wide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.add-grid--2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.add-action {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.add-grid--2x2 .add-action {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.add-action__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.add-action__icon--blue {
+  background: linear-gradient(160deg, #5fa8d9, #2f74a8);
+}
+
+.add-action__icon--purple {
+  background: linear-gradient(160deg, #b389e8, #8a5cd1);
+}
+
+.add-action__icon--orange {
+  background: linear-gradient(160deg, #f0ab5f, #d9822f);
+}
+
+.add-action__icon--teal {
+  background: linear-gradient(160deg, #4fd9c4, #1f9c8c);
+}
+
+.add-action__icon--pink {
+  background: linear-gradient(160deg, #f07a9e, #d94070);
+}
+
+.add-action__icon--gray {
+  background: linear-gradient(160deg, #93a7b1, #5b6b73);
+}
+
+.quick-log {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ---------- Icon picker ---------- */
+
+.icon-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+}
+
+.icon-picker__option {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.icon-picker__option--active {
+  border-color: var(--accent-trace);
+  background: var(--accent-trace-dim);
+  color: var(--text-primary);
+}
+
+/* ---------- Tab bar ---------- */
+
+.tab-bar {
   position: fixed;
-  right: 1.25rem;
-  bottom: 1.5rem;
-  width: 56px;
-  height: 56px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 64px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bg-elevated-translucent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid var(--border);
+  z-index: 30;
+}
+
+.tab-bar__item {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.65rem;
+}
+
+.tab-bar__item--active {
+  color: var(--accent-info);
+}
+
+.tab-bar__add {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: var(--accent-trace);
-  color: #06110c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-info);
+  color: #fff;
   border: none;
-  font-size: 1.8rem;
-  line-height: 1;
   box-shadow: var(--shadow);
+  transform: translateY(-14px);
   cursor: pointer;
 }
 
@@ -347,7 +534,7 @@ button {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  z-index: 20;
+  z-index: 40;
 }
 
 .sheet {
@@ -618,10 +805,157 @@ button {
 
 /* ---------- Profile ---------- */
 
+.profile__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--accent-critical);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 auto 0.75rem;
+}
+
 .profile__email {
   color: var(--text-secondary);
   font-family: var(--font-data);
   margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.profile__signout {
+  margin-top: 1.5rem;
+}
+
+/* ---------- Matérias & Provas list ---------- */
+
+.materias-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+}
+
+.list-row__icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+}
+
+.list-row__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-row__title {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.list-row__subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-data);
+}
+
+.list-row__chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.list-add-dashed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 10px;
+  padding: 0.85rem;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* ---------- Subject / exam detail screens ---------- */
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-header__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-sunken);
+  color: var(--text-secondary);
+}
+
+.detail-header__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-edit-form {
+  margin-bottom: 1.5rem;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.detail-edit-form__actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.detail-links {
+  margin-bottom: 1rem;
+}
+
+.detail-delete-button {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
 }
 
 .segmented {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import type { TopicPriorityByDay } from "../types/db";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 function toDateKey(date: Date) {
   return date.toISOString().slice(0, 10);
@@ -13,6 +14,7 @@ export function useTopicPrioritiesByRange(startDate: Date, endDate: Date) {
 
   const startKey = toDateKey(startDate);
   const endKey = toDateKey(endDate);
+  const { version } = useDataRefresh();
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -36,7 +38,7 @@ export function useTopicPrioritiesByRange(startDate: Date, endDate: Date) {
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, [refetch, version]);
 
   return { byDay, loading, error, refetch };
 }

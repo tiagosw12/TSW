@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useTopicPrioritiesByRange } from "../hooks/useTopicPrioritiesByRange";
 import { DayTopicsCard } from "../components/DayTopicsCard";
-import { ViewSwitcher } from "../components/ViewSwitcher";
 
 const PROJECTION_DAYS = 14;
 const WEEKDAY_SHORT = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
@@ -56,8 +55,6 @@ export function CalendarScreen() {
           <h1 className="home__title">Próximos {PROJECTION_DAYS} dias</h1>
         </div>
       </header>
-
-      <ViewSwitcher />
 
       {loading && <p className="home__status">Carregando projeção…</p>}
       {error && <p className="form__error">{error}</p>}

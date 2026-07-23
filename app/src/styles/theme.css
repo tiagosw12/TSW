@@ -21,6 +21,7 @@
   --accent-critical: #e2695a;
   --accent-critical-dim: rgba(226, 105, 90, 0.16);
   --accent-info: #5fa8d9;
+  --bg-elevated-translucent: rgba(16, 22, 28, 0.82);
 
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -46,6 +47,7 @@
   --accent-critical: #b8483a;
   --accent-critical-dim: rgba(184, 72, 58, 0.12);
   --accent-info: #2f74a8;
+  --bg-elevated-translucent: rgba(255, 255, 255, 0.82);
 
   --shadow: 0 8px 24px rgba(20, 30, 35, 0.12);
 }
@@ -70,6 +72,7 @@
     --accent-critical: #b8483a;
     --accent-critical-dim: rgba(184, 72, 58, 0.12);
     --accent-info: #2f74a8;
+    --bg-elevated-translucent: rgba(255, 255, 255, 0.82);
 
     --shadow: 0 8px 24px rgba(20, 30, 35, 0.12);
   }

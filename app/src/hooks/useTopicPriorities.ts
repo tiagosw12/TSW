@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import type { TopicPriority } from "../types/db";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 export function useTopicPriorities() {
   const [priorities, setPriorities] = useState<TopicPriority[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [version, setVersion] = useState(0);
+  const { version } = useDataRefresh();
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -18,12 +19,11 @@ export function useTopicPriorities() {
       setPriorities(data ?? []);
     }
     setLoading(false);
-    setVersion((v) => v + 1);
   }, []);
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, [refetch, version]);
 
   useEffect(() => {
     function handleVisibility() {
@@ -37,5 +37,5 @@ export function useTopicPriorities() {
     };
   }, [refetch]);
 
-  return { priorities, loading, error, refetch, version };
+  return { priorities, loading, error, refetch };
 }

@@ -1,6 +1,5 @@
-import { useTopicHistory } from "../hooks/useTopicHistory";
 import type { TopicPriority } from "../types/db";
-import { RetentionTrace } from "./RetentionTrace";
+import { RetentionBar } from "./RetentionBar";
 import { SubjectIconBadge } from "./SubjectIconBadge";
 
 export type PriorityTier = "critical" | "moderate" | "low";
@@ -17,26 +16,22 @@ export function PriorityCard({
   item,
   tier,
   onStudy,
-  refreshKey,
 }: {
   item: TopicPriority;
   tier: PriorityTier;
   onStudy: (item: TopicPriority) => void;
-  refreshKey: number;
 }) {
-  const { retention, events } = useTopicHistory(item.topic_id, refreshKey);
-
   return (
     <button className={`priority-card priority-card--${tier}`} onClick={() => onStudy(item)}>
       <div className="priority-card__header">
-        <SubjectIconBadge subjectName={item.subject_name} tier={tier} size={32} />
+        <SubjectIconBadge subjectName={item.subject_name} icon={item.subject_icon} tier={tier} size={32} />
         <div className="priority-card__header-text">
           <span className="priority-card__subject">{item.subject_name}</span>
           <span className="priority-card__topic">{item.topic_name}</span>
         </div>
       </div>
 
-      <RetentionTrace retention={retention} events={events} />
+      <RetentionBar retention={item.estimated_retention} tier={tier} />
 
       <div className="priority-card__meta">
         <span>Retenção {(item.estimated_retention * 100).toFixed(0)}%</span>

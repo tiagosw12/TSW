@@ -1,58 +1,46 @@
-import {
-  Activity,
-  Atom,
-  Baby,
-  Bone,
-  BookOpen,
-  Brain,
-  Cpu,
-  Dna,
-  Dumbbell,
-  FlaskConical,
-  Globe2,
-  HeartPulse,
-  Landmark,
-  Languages,
-  Microscope,
-  Palette,
-  Pill,
-  Scale,
-  Scissors,
-  Sigma,
-  Stethoscope,
-  type LucideIcon,
-} from "lucide-react";
+import { BookOpen, type LucideIcon } from "lucide-react";
+import { iconByKey } from "./iconRegistry";
 
-const RULES: Array<{ keywords: string[]; icon: LucideIcon }> = [
-  { keywords: ["matemática", "matematica", "álgebra", "algebra", "cálculo", "calculo", "geometria"], icon: Sigma },
-  { keywords: ["português", "portugues", "gramática", "gramatica", "literatura", "redação", "redacao"], icon: BookOpen },
-  { keywords: ["química", "quimica"], icon: FlaskConical },
-  { keywords: ["anatomia"], icon: Bone },
-  { keywords: ["fisiologia"], icon: Activity },
-  { keywords: ["física", "fisica"], icon: Atom },
-  { keywords: ["biologia"], icon: Dna },
-  { keywords: ["história", "historia"], icon: Landmark },
-  { keywords: ["geografia"], icon: Globe2 },
-  { keywords: ["inglês", "ingles", "espanhol", "língua", "lingua", "idioma"], icon: Languages },
-  { keywords: ["direito", "jurídic", "juridic", "legislação", "legislacao"], icon: Scale },
-  { keywords: ["filosofia", "sociologia", "psicologia", "psiquiatria"], icon: Brain },
-  { keywords: ["informática", "informatica", "programação", "programacao", "computação", "computacao"], icon: Cpu },
-  { keywords: ["educação física", "educacao fisica", "esporte"], icon: Dumbbell },
-  { keywords: ["arte", "música", "musica"], icon: Palette },
-  { keywords: ["farmacologia"], icon: Pill },
-  { keywords: ["patologia"], icon: Microscope },
-  { keywords: ["semiologia", "clínica médica", "clinica medica", "propedêutica", "propedeutica"], icon: Stethoscope },
-  { keywords: ["cirurgia"], icon: Scissors },
-  { keywords: ["pediatria"], icon: Baby },
-  { keywords: ["cardiologia"], icon: HeartPulse },
+const KEYWORD_RULES: Array<{ keywords: string[]; key: string }> = [
+  { keywords: ["anatomia"], key: "bone" },
+  { keywords: ["fisiologia"], key: "activity" },
+  { keywords: ["matemática", "matematica", "álgebra", "algebra", "cálculo", "calculo", "geometria"], key: "sigma" },
+  { keywords: ["português", "portugues", "gramática", "gramatica", "literatura", "redação", "redacao"], key: "book-open" },
+  { keywords: ["química", "quimica"], key: "flask-conical" },
+  { keywords: ["física", "fisica"], key: "atom" },
+  { keywords: ["biologia"], key: "dna" },
+  { keywords: ["história", "historia"], key: "landmark" },
+  { keywords: ["geografia"], key: "globe" },
+  { keywords: ["inglês", "ingles", "espanhol", "língua", "lingua", "idioma"], key: "languages" },
+  { keywords: ["direito", "jurídic", "juridic", "legislação", "legislacao"], key: "scale" },
+  { keywords: ["filosofia", "sociologia", "psicologia", "psiquiatria"], key: "brain" },
+  { keywords: ["informática", "informatica", "programação", "programacao", "computação", "computacao"], key: "cpu" },
+  { keywords: ["educação física", "educacao fisica", "esporte"], key: "dumbbell" },
+  { keywords: ["arte", "música", "musica"], key: "palette" },
+  { keywords: ["farmacologia"], key: "pill" },
+  { keywords: ["patologia"], key: "microscope" },
+  { keywords: ["semiologia", "clínica médica", "clinica medica", "propedêutica", "propedeutica"], key: "stethoscope" },
+  { keywords: ["cirurgia"], key: "scissors" },
+  { keywords: ["pediatria"], key: "baby" },
+  { keywords: ["cardiologia"], key: "heart-pulse" },
 ];
 
-export function subjectIcon(subjectName: string): LucideIcon {
+/** Best-effort guess from the subject's name, used when it has no explicitly chosen icon. */
+function guessIconByName(subjectName: string): LucideIcon {
   const normalized = subjectName.toLowerCase();
-  for (const rule of RULES) {
+  for (const rule of KEYWORD_RULES) {
     if (rule.keywords.some((keyword) => normalized.includes(keyword))) {
-      return rule.icon;
+      return iconByKey(rule.key) ?? BookOpen;
     }
   }
   return BookOpen;
+}
+
+/** Explicit icon (chosen via IconPicker) wins; falls back to a name-based guess, then a generic book. */
+export function resolveSubjectIcon(subjectName: string, iconKey?: string | null): LucideIcon {
+  if (iconKey) {
+    const explicit = iconByKey(iconKey);
+    if (explicit) return explicit;
+  }
+  return guessIconByName(subjectName);
 }

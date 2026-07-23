@@ -1,13 +1,20 @@
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
-import { Sheet } from "../components/Sheet";
 
-export function ProfileSheet({ onClose }: { onClose: () => void }) {
+export function ProfileScreen() {
   const { user, signOut } = useAuth();
   const { choice, setChoice } = useTheme();
 
   return (
-    <Sheet title="Perfil" onClose={onClose}>
+    <div className="home">
+      <header className="home__header">
+        <div>
+          <p className="home__eyebrow">conta</p>
+          <h1 className="home__title">Perfil</h1>
+        </div>
+      </header>
+
+      <div className="profile__avatar">{(user?.email?.[0] ?? "?").toUpperCase()}</div>
       <p className="profile__email">{user?.email}</p>
 
       <div className="form__field">
@@ -25,9 +32,9 @@ export function ProfileSheet({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      <button className="button button--danger" onClick={signOut}>
+      <button className="button button--danger profile__signout" onClick={signOut}>
         Sair
       </button>
-    </Sheet>
+    </div>
   );
 }

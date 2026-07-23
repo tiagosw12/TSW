@@ -1,16 +1,18 @@
-import { subjectIcon } from "../lib/subjectIcon";
+import { resolveSubjectIcon } from "../lib/subjectIcon";
 import type { PriorityTier } from "./PriorityCard";
 
 export function SubjectIconBadge({
   subjectName,
+  icon,
   tier,
   size = 36,
 }: {
   subjectName: string;
+  icon?: string | null;
   tier: PriorityTier;
   size?: number;
 }) {
-  const Icon = subjectIcon(subjectName);
+  const Icon = resolveSubjectIcon(subjectName, icon);
   return (
     <span
       className={`subject-badge subject-badge--${tier}`}

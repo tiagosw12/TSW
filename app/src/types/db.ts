@@ -9,6 +9,7 @@ export interface Database {
           user_id: string;
           name: string;
           color: string | null;
+          icon: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -17,10 +18,12 @@ export interface Database {
           user_id: string;
           name: string;
           color?: string | null;
+          icon?: string | null;
         };
         Update: {
           name?: string;
           color?: string | null;
+          icon?: string | null;
         };
         Relationships: [];
       };
@@ -207,6 +210,7 @@ export interface Database {
           topic_name: string;
           subject_id: string;
           subject_name: string;
+          subject_icon: string | null;
           manual_importance: number;
           exam_weight_component: number;
           importance: number;
@@ -234,6 +238,7 @@ export interface Database {
           topic_name: string;
           subject_id: string;
           subject_name: string;
+          subject_icon: string | null;
           manual_importance: number;
           exam_weight_component: number;
           importance: number;

@@ -5,6 +5,7 @@ import { useToast } from "../contexts/ToastContext";
 import { useSubjects } from "../hooks/useSubjects";
 import { ACTIVITY_TYPES, type ActivityType } from "../types/db";
 import { Sheet } from "../components/Sheet";
+import { TopicPicker } from "../components/TopicPicker";
 
 export interface TimerTarget {
   topicId: string;
@@ -27,10 +28,12 @@ function formatElapsed(seconds: number) {
 
 export function TimerSheet({
   initialTarget,
+  initialActivityType,
   onClose,
   onSaved,
 }: {
   initialTarget: TimerTarget | null;
+  initialActivityType?: ActivityType;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -40,7 +43,7 @@ export function TimerSheet({
 
   const [target, setTarget] = useState<TimerTarget | null>(initialTarget);
   const [phase, setPhase] = useState<Phase>(initialTarget ? "setup" : "pick");
-  const [activityType, setActivityType] = useState<ActivityType | null>(null);
+  const [activityType, setActivityType] = useState<ActivityType | null>(initialActivityType ?? null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [correctPercentage, setCorrectPercentage] = useState(70);
@@ -121,27 +124,7 @@ export function TimerSheet({
 
   return (
     <Sheet title={target ? `${target.subjectName} · ${target.topicName}` : "Estudar tópico"} onClose={onClose}>
-      {phase === "pick" && (
-        <div className="timer-pick">
-          {subjects.length === 0 && <p className="empty-hint">Cadastre uma matéria e um tópico primeiro.</p>}
-          {subjects.map((subject) => (
-            <div key={subject.id} className="timer-pick__subject">
-              <h3>{subject.name}</h3>
-              <div className="timer-pick__topics">
-                {subject.topics.map((topic) => (
-                  <button
-                    key={topic.id}
-                    className="button button--secondary"
-                    onClick={() => pickTopic(topic.id, topic.name, subject.id, subject.name)}
-                  >
-                    {topic.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {phase === "pick" && <TopicPicker subjects={subjects} onPick={pickTopic} />}
 
       {phase === "setup" && (
         <div className="timer-setup">
