@@ -219,6 +219,33 @@ export interface Database {
           priority: number;
         }[];
       };
+      get_topic_priorities_by_date_range: {
+        Args: {
+          p_start_date: string;
+          p_end_date: string;
+          p_user_id?: string;
+          p_urgency_k?: number;
+          p_urgency_boost?: number;
+        };
+        Returns: {
+          day: string;
+          day_rank: number;
+          topic_id: string;
+          topic_name: string;
+          subject_id: string;
+          subject_name: string;
+          manual_importance: number;
+          exam_weight_component: number;
+          importance: number;
+          estimated_retention: number;
+          forgetting: number;
+          nearest_exam_id: string | null;
+          nearest_exam_name: string | null;
+          days_to_nearest_exam: number | null;
+          urgency: number;
+          priority: number;
+        }[];
+      };
     };
   };
 }
@@ -232,6 +259,8 @@ export type StudySession = Database["public"]["Tables"]["study_sessions"]["Row"]
 export type QuizResult = Database["public"]["Tables"]["quiz_results"]["Row"];
 export type TopicRetention = Database["public"]["Views"]["topic_retention"]["Row"];
 export type TopicPriority = Database["public"]["Functions"]["get_topic_priorities"]["Returns"][number];
+export type TopicPriorityByDay =
+  Database["public"]["Functions"]["get_topic_priorities_by_date_range"]["Returns"][number];
 
 export const ACTIVITY_TYPES: { value: ActivityType; label: string }[] = [
   { value: "leitura", label: "Leitura" },

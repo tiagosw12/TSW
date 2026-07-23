@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTopicPriorities } from "../hooks/useTopicPriorities";
 import { PriorityCard, tierFor } from "../components/PriorityCard";
+import { ViewSwitcher } from "../components/ViewSwitcher";
 import { Sheet } from "../components/Sheet";
 import { SubjectsSheet } from "./SubjectsSheet";
 import { ExamsSheet } from "./ExamsSheet";
@@ -39,6 +40,8 @@ export function HomeScreen() {
           </svg>
         </button>
       </header>
+
+      <ViewSwitcher />
 
       {loading && <p className="home__status">Carregando fila…</p>}
       {error && <p className="form__error">{error}</p>}
