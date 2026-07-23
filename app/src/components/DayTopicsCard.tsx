@@ -1,6 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import type { TopicPriorityByDay } from "../types/db";
-import { subjectIcon } from "../lib/subjectIcon";
+import { SubjectIconBadge } from "./SubjectIconBadge";
 import { tierFor, type PriorityTier } from "./PriorityCard";
 
 const TIER_LABEL: Record<PriorityTier, string> = {
@@ -19,12 +19,11 @@ export function DayTopicsCard({
   if (items.length === 0) return null;
 
   const [top, ...rest] = items;
-  const tier = tierFor(top.priority, maxPriority);
-  const TopIcon = subjectIcon(top.subject_name);
+  const topTier = tierFor(top.priority, maxPriority);
   const examName = items.find((item) => item.nearest_exam_id !== null)?.nearest_exam_name;
 
   return (
-    <div className={`day-card day-card--${tier} ${examName ? "day-card--exam" : ""}`}>
+    <div className={`priority-card priority-card--${topTier} ${examName ? "day-card--exam" : ""}`}>
       {examName && (
         <div className="day-card__exam-banner">
           <GraduationCap size={16} strokeWidth={1.75} />
@@ -32,22 +31,22 @@ export function DayTopicsCard({
         </div>
       )}
 
-      <div className="day-card__top">
-        <TopIcon size={36} strokeWidth={1.75} className="day-card__top-icon" />
-        <div className="day-card__top-text">
-          <span className="day-card__top-subject">{top.subject_name}</span>
-          <span className="day-card__top-topic">{top.topic_name}</span>
+      <div className="priority-card__header">
+        <SubjectIconBadge subjectName={top.subject_name} tier={topTier} size={36} />
+        <div className="priority-card__header-text">
+          <span className="priority-card__subject">{top.subject_name}</span>
+          <span className="priority-card__topic">{top.topic_name}</span>
         </div>
-        <span className={`chip chip--${tier}`}>{TIER_LABEL[tier]}</span>
+        <span className={`chip chip--${topTier}`}>{TIER_LABEL[topTier]}</span>
       </div>
 
       {rest.length > 0 && (
         <div className="day-card__rest">
           {rest.map((item, index) => {
-            const RowIcon = subjectIcon(item.subject_name);
+            const rowTier = tierFor(item.priority, maxPriority);
             return (
               <div className="day-card__row" key={item.topic_id}>
-                <RowIcon size={18} strokeWidth={1.75} className="day-card__row-icon" />
+                <SubjectIconBadge subjectName={item.subject_name} tier={rowTier} size={22} />
                 <span className="day-card__row-text">
                   {item.subject_name} · {item.topic_name}
                 </span>

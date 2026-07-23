@@ -1,6 +1,7 @@
 import { useTopicHistory } from "../hooks/useTopicHistory";
 import type { TopicPriority } from "../types/db";
 import { RetentionTrace } from "./RetentionTrace";
+import { SubjectIconBadge } from "./SubjectIconBadge";
 
 export type PriorityTier = "critical" | "moderate" | "low";
 
@@ -28,8 +29,11 @@ export function PriorityCard({
   return (
     <button className={`priority-card priority-card--${tier}`} onClick={() => onStudy(item)}>
       <div className="priority-card__header">
-        <span className="priority-card__subject">{item.subject_name}</span>
-        <span className="priority-card__topic">{item.topic_name}</span>
+        <SubjectIconBadge subjectName={item.subject_name} tier={tier} size={32} />
+        <div className="priority-card__header-text">
+          <span className="priority-card__subject">{item.subject_name}</span>
+          <span className="priority-card__topic">{item.topic_name}</span>
+        </div>
       </div>
 
       <RetentionTrace retention={retention} events={events} />

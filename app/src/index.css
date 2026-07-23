@@ -12,10 +12,7 @@ body {
   margin: 0;
   font-family: var(--font-ui);
   color: var(--text-primary);
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 100% 28px,
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 28px 100%,
-    var(--bg);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -267,8 +264,16 @@ button {
 
 .priority-card__header {
   display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.priority-card__header-text {
+  display: flex;
   flex-direction: column;
-  margin-bottom: 0.4rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .priority-card__subject {
@@ -719,41 +724,13 @@ button {
   color: var(--text-muted);
 }
 
-/* ---------- Day priority card (calendar TOP 3) ---------- */
+/* ---------- Day priority card (calendar TOP 3) ----------
+   Reuses .priority-card / .priority-card--{tier} as the outer card (same
+   left-border-only tier accent, no full outline) — these rules only add the
+   day-specific bits: the exam banner and the two compact rows below. */
 
-.day-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--border-strong);
-  border-radius: 10px;
-  padding: 1.1rem 1.2rem;
-}
-
-.day-card--critical {
-  border-left-color: var(--accent-critical);
-}
-
-.day-card--moderate {
-  border-left-color: var(--accent-warn);
-}
-
-.day-card--low {
-  border-left-color: var(--accent-trace);
-}
-
-.day-card--exam.day-card--critical {
-  background: linear-gradient(160deg, var(--accent-critical-dim), var(--bg-elevated) 65%);
-  border-color: var(--accent-critical);
-}
-
-.day-card--exam.day-card--moderate {
-  background: linear-gradient(160deg, var(--accent-warn-dim), var(--bg-elevated) 65%);
-  border-color: var(--accent-warn);
-}
-
-.day-card--exam.day-card--low {
-  background: linear-gradient(160deg, var(--accent-trace-dim), var(--bg-elevated) 65%);
-  border-color: var(--accent-trace);
+.day-card--exam {
+  border-left-width: 5px;
 }
 
 .day-card__exam-banner {
@@ -766,37 +743,6 @@ button {
   margin-bottom: 0.75rem;
   padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--border);
-}
-
-.day-card__top {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.day-card__top-icon {
-  flex-shrink: 0;
-  color: var(--text-secondary);
-}
-
-.day-card__top-text {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-.day-card__top-subject {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  font-family: var(--font-data);
-}
-
-.day-card__top-topic {
-  font-size: 1.15rem;
-  font-weight: 600;
 }
 
 .day-card__rest {
@@ -818,9 +764,28 @@ button {
   border-top: 1px solid var(--grid-line);
 }
 
-.day-card__row-icon {
+/* ---------- Subject icon badge (shared: Home priority cards + Calendar) ---------- */
+
+.subject-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  color: var(--text-muted);
+}
+
+.subject-badge--critical {
+  background: var(--accent-critical);
+  color: #fff;
+}
+
+.subject-badge--moderate {
+  background: var(--accent-warn);
+  color: #fff;
+}
+
+.subject-badge--low {
+  background: var(--accent-trace);
+  color: #06110c;
 }
 
 .day-card__row-text {
