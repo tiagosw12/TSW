@@ -683,97 +683,40 @@ button {
   border-color: var(--accent-critical);
 }
 
-/* ---------- Calendar ---------- */
+/* ---------- Calendar (agenda list) ---------- */
 
-.calendar__nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.85rem;
-}
-
-.calendar__month-label {
-  font-size: 1rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.calendar__weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 0.35rem;
-}
-
-.calendar__weekday {
-  text-align: center;
-  font-family: var(--font-data);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-}
-
-.calendar__grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.2rem;
-  margin-bottom: 1.5rem;
-}
-
-.calendar__day-cell {
-  aspect-ratio: 1;
+.agenda {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 8px;
+  gap: 1.5rem;
+}
+
+.agenda__day-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.agenda__day-label {
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-primary);
-  cursor: pointer;
-  position: relative;
 }
 
-.calendar__day-cell--empty {
-  cursor: default;
+.agenda__day-label--today {
+  color: var(--accent-critical);
 }
 
-.calendar__day-cell--selected {
-  border-color: var(--border-strong);
-  background: var(--bg-elevated);
+.agenda__day-weekday {
+  font-weight: 400;
+  color: inherit;
 }
 
-.calendar__day-number {
+.agenda__day-date {
   font-family: var(--font-data);
-  font-size: 0.85rem;
-}
-
-.calendar__day-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent-trace);
-}
-
-.calendar__day-dot--critical {
-  background: var(--accent-critical);
-}
-
-.calendar__day-dot--moderate {
-  background: var(--accent-warn);
-}
-
-.calendar__day-dot--low {
-  background: var(--accent-trace);
-}
-
-.calendar__day-exam-mark {
-  position: absolute;
-  top: 4px;
-  right: 6px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent-info);
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 /* ---------- Day priority card (calendar TOP 3) ---------- */
